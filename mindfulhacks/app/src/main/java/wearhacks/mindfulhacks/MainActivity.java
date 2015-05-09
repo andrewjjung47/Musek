@@ -1,5 +1,6 @@
 package wearhacks.mindfulhacks;
 
+import android.media.AudioManager;
 import android.os.RemoteException;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
@@ -313,17 +316,17 @@ public class MainActivity extends Activity implements OnClickListener {
 
         // Initializing beacon, region, and manager to connect to estimote
         beacons = new ArrayList<Beacon>();
-        beacons.add(new Beacon( "b9407f30-f5f8-466e-aff9-25556b57fe6d",
-                                "estimote",
-                                "E5:3D:D0:63:FD:88",
-                                64904, 53347,
-                                -74, -62));
+        beacons.add(new Beacon("b9407f30-f5f8-466e-aff9-25556b57fe6d",
+                "estimote",
+                "E5:3D:D0:63:FD:88",
+                64904, 53347,
+                -74, -62));
 
         beacons.add(new Beacon("b9407f30-f5f8-466e-aff9-25556b57fe6d",
-                               "estimote",
-                               "E5:3D:D0:63:FD:88",
-                               10470, 33680,
-                               -74, -41));
+                "estimote",
+                "E5:3D:D0:63:FD:88",
+                10470, 33680,
+                -74, -41));
 
         beaconManager = new BeaconManager(this);
 
@@ -332,27 +335,6 @@ public class MainActivity extends Activity implements OnClickListener {
         beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
 
         final ArrayList<Beacon> beaconList = new ArrayList<Beacon>(beacons);
-
-//        // Choose what to do when we enter/leave a region with a beacon
-//        beaconManager.setMonitoringListener(new BeaconManager.MonitoringListener() {
-//            @Override
-//            public void onEnteredRegion(Region region, List<Beacon> beacons) {
-//                for (Beacon rangedBeacon : beacons) {
-//                    Log.v("dbg", rangedBeacon.getMajor() + "");
-//                    if (rangedBeacon.getMajor() == beaconList.get(0).getMajor()) {
-//                        Log.v("dbg", "In region of beacon 0");
-//                    } else if (rangedBeacon.getMajor() == beaconList.get(1).getMajor()) {
-//                        Log.v("dbg", "In region of beacon 1");
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onExitedRegion(Region region) {
-//                // Exit region, won't need to do anything really
-//                Log.v("dbg", "Left region");
-//            }
-//        });
 
         // Configure BeaconManager.
         beaconManager = new BeaconManager(this);
@@ -377,42 +359,6 @@ public class MainActivity extends Activity implements OnClickListener {
                 }
             }
         });
-
-//        beaconManager.setRangingListener(new BeaconManager.RangingListener() {
-//            @Override
-//            public void onBeaconsDiscovered(Region region, final List<Beacon> rangedBeacons) {
-//                // Note that results are not delivered on UI thread.
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        // Just in case if there are multiple beacons with the same uuid, major, minor.
-//                        Beacon foundBeacon = null;
-//                        for (Beacon rangedBeacon : rangedBeacons) {
-//                            if (rangedBeacon.getMacAddress().equals(beacons.get(0).getMacAddress())) {
-//                                foundBeacon = rangedBeacon;
-//                            } else if (rangedBeacon.getMacAddress().equals(beacons.get(0).getMacAddress())) {
-//                                foundBeacon = rangedBeacon;
-//                            }
-//                        }
-//                        if (foundBeacon != null) {
-//                            if (foundBeacon.getMacAddress().equals(beacons.get(0).getMacAddress())) {
-//                                double distance = Math.min(Utils.computeAccuracy(foundBeacon), 6.0);
-//                                //updateDistanceView(foundBeacon);
-//                                Log.v("dbg", distance + "");
-//                                TextView tv = (TextView) findViewById(R.id.TV1);
-//                                tv.setText(String.valueOf(distance));
-//                            } else if (foundBeacon.getMacAddress().equals(beacons.get(0).getMacAddress())) {
-//                                double distance = Math.min(Utils.computeAccuracy(foundBeacon), 6.0);
-//                                //updateDistanceView(foundBeacon);
-//                                Log.v("dbg", distance + "");
-//                                TextView tv = (TextView) findViewById(R.id.TV2);
-//                                tv.setText(String.valueOf(distance));
-//                            }
-//                        }
-//                    }
-//                });
-//            }
-//        });
 
         // Automatically plays local file uptownfunk in /res/raw
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.uptownfunk);
@@ -562,9 +508,105 @@ public class MainActivity extends Activity implements OnClickListener {
         Log.v("dbg", "Debug");
 
         if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
+            //mediaPlayer.pause();
+            fadeOut();
         } else {
-            mediaPlayer.start();
+            //mediaPlayer.start();
+            fadeIn();
         }
+    }
+
+    private int MAX_INT_VOLUME = 100;
+    private int MIN_INT_VOLUME = 0;
+    private float MAX_FLOAT_VOLUME = 1;
+    private float MIN_FLOAT_VOLUME = 0;
+
+    private int iVolume = 50;
+    private int cVolume;
+
+    private void updateVolume(int change) {
+        cVolume += change;
+
+        // Clamp volume within valid ranges
+        if (cVolume > MAX_INT_VOLUME) {
+            cVolume = MAX_INT_VOLUME;
+        }
+
+        if (cVolume < MIN_INT_VOLUME) {
+            cVolume = MIN_INT_VOLUME;
+        }
+
+        //convert to float value
+        float fVolume = 1 - ((float) Math.log(MAX_INT_VOLUME - cVolume) / (float) Math.log(MAX_INT_VOLUME));
+
+        if (fVolume > MAX_FLOAT_VOLUME) {
+            fVolume = MAX_FLOAT_VOLUME;
+        }
+
+        if (fVolume < MIN_FLOAT_VOLUME) {
+            fVolume = MIN_FLOAT_VOLUME;
+        }
+
+        mediaPlayer.setVolume(fVolume, fVolume);
+    }
+
+    private void fadeOut() {
+        float fadeDuration = 5;
+
+        AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
+        iVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        cVolume = iVolume;
+
+        final Timer timer = new Timer(true);
+        TimerTask timerTask = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                updateVolume(-1);
+                if (cVolume == MIN_INT_VOLUME)
+                {
+                    timer.cancel();
+                    timer.purge();
+                    mediaPlayer.pause();
+                }
+            }
+        };
+
+        // calculate delay, cannot be zero, set to 1 if zero
+        int delay = (int) fadeDuration/iVolume;
+        if (delay == 0) delay = 1;
+
+        timer.schedule(timerTask, delay, delay);
+    }
+
+    private void fadeIn() {
+        float fadeDuration = 5;
+
+        AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
+        iVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        cVolume = iVolume;
+
+        final Timer timer = new Timer(true);
+        TimerTask timerTask = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                updateVolume(1);
+                if (cVolume == MAX_INT_VOLUME)
+                {
+                    timer.cancel();
+                    timer.purge();
+                    mediaPlayer.start();
+                }
+            }
+        };
+
+        // calculate delay, cannot be zero, set to 1 if zero
+        int delay = (int) fadeDuration/iVolume;
+        if (delay == 0) delay = 1;
+
+        timer.schedule(timerTask, delay, delay);
     }
 }
