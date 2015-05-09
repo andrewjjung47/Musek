@@ -16,6 +16,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.concentrateText=@"0";
+    
+    self.concentrateLabel.text = self.concentrateText;
 }
 
 - (void)didReceiveMemoryWarning {

@@ -56,6 +56,7 @@
              NSLog(@"Concentrate:");
             NSLog(@"%@", packet.values[0]);
             
+           // self.concentrateLabel.text =packet.values[0];
 
             
            // NSLog(_strFromInt);

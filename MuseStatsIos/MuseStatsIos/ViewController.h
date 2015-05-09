@@ -12,7 +12,14 @@
     IBOutlet UILabel *concentrateLabel;
 }
 
+@property (weak, nonatomic) NSString *concentrateText;
+
+
+
+
 @property (retain, nonatomic) IBOutlet UILabel *concentrateLabel;
+
+
 
 @end
 
