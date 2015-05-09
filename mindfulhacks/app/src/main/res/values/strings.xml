@@ -18,5 +18,7 @@
     <string name="pause">Pause/Resume</string>
     <string name="drop">Drop</string>
     <string name="muse_elem">Elements:</string>
+    <string name="muse_conc">Concentration:</string>
+    <string name="muse_mellow">Mellow:</string>
 
 </resources>

@@ -129,6 +129,12 @@ public class MainActivity extends Activity implements OnClickListener {
                     if (fileWriter.getBufferedMessagesSize() > 8096)
                         fileWriter.flush();
                     break;
+                case CONCENTRATION:
+                    updateConcentration(p.getValues());
+                    break;
+                case MELLOW:
+                    updateMellow(p.getValues());
+                    break;
                 default:
                     break;
             }
@@ -202,6 +208,34 @@ public class MainActivity extends Activity implements OnClickListener {
                                 "%6.2f", data.get(Eeg.FP2.ordinal())));
                         elem4.setText(String.format(
                                 "%6.2f", data.get(Eeg.TP10.ordinal())));
+                    }
+                });
+            }
+        }
+
+        private void updateConcentration(final ArrayList<Double> data) {
+            Activity activity = activityRef.get();
+            if (activity != null) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView conc = (TextView) findViewById(R.id.conc);
+                        conc.setText(String.format(
+                                "%6.2f", data.get(0)));
+                    }
+                });
+            }
+        }
+
+        private void updateMellow(final ArrayList<Double> data) {
+            Activity activity = activityRef.get();
+            if (activity != null) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView mellow = (TextView) findViewById(R.id.mellow);
+                        mellow.setText(String.format(
+                                "%6.2f", data.get(0)));
                     }
                 });
             }
@@ -454,6 +488,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 MuseDataPacketType.BATTERY);
         muse.registerDataListener(dataListener,
                 MuseDataPacketType.CONCENTRATION);
+        muse.registerDataListener(dataListener,
+                MuseDataPacketType.MELLOW);
         muse.setPreset(MusePreset.PRESET_14);
         muse.enableDataTransmission(dataTransmission);
     }
