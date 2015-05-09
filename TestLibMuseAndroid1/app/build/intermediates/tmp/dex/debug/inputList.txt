@@ -1,0 +1,5 @@
+C:\Users\sharonnie\Documents\mindfulhacks\TestLibMuseAndroid1\app\build\intermediates\classes\debug
+C:\Users\sharonnie\Documents\mindfulhacks\TestLibMuseAndroid1\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-21230bb82d676c6ba3543a3eb8a077e6fd90b01d.jar
+C:\Users\sharonnie\Documents\mindfulhacks\TestLibMuseAndroid1\app\build\intermediates\pre-dexed\debug\libmuseandroid-a7fcb84b45eca06acc7d8bd6b64c4c9ccf07648d.jar
+C:\Users\sharonnie\Documents\mindfulhacks\TestLibMuseAndroid1\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-564c1287b76b2617723bc32a457df6aad65cb48b.jar
+C:\Users\sharonnie\Documents\mindfulhacks\TestLibMuseAndroid1\app\build\intermediates\pre-dexed\debug\classes-a3b26a6775a93aca30487a50212f861c9374252e.jar
