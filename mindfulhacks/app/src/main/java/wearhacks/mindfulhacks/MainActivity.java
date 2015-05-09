@@ -1,5 +1,6 @@
 package wearhacks.mindfulhacks;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +44,10 @@ public class MainActivity extends ActionBarActivity {
             }
 
         });
+
+        // Automatically plays local file uptownfunk in /res/raw
+        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.uptownfunk);
+        mediaPlayer.start(); // no need to call prepare(); create() does that for you
     }
 
 
