@@ -25,4 +25,10 @@
         android:layout_height="50dp"
         android:layout_width="150dp" />
 
+    <TextView
+        android:id="@+id/TV2"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/btn1" />
+
 </RelativeLayout>
