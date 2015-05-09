@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.interaxon.libmuse.Accelerometer;
+import com.estimote.sdk.Beacon;
 
 public class MainActivity extends ActionBarActivity {
 
