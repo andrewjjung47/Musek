@@ -261,16 +261,16 @@ public class MainActivity extends Activity implements OnClickListener {
                 conc = data.get(0);
             }
 
-            if (mellow < 50 && conc < 50) {
+            if (mellow < 0.5 && conc < 0.5) {
                 userState = UserState.LOLO;
             }
-            else if (mellow < 50 & conc >= 50) {
+            else if (mellow < 0.5 & conc >= 0.5) {
                 userState = UserState.LOHI;
             }
-            else if (mellow >= 50 & conc < 50) {
+            else if (mellow >= 0.5 & conc < 0.5) {
                 userState = UserState.HILO;
             }
-            else if (mellow >= 50 & conc >= 50) {
+            else if (mellow >= 0.5 & conc >= 0.5) {
                 userState = UserState.HIHI;
             }
 
