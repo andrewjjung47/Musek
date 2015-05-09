@@ -11,6 +11,8 @@
 
 @implementation ViewController
 
+@synthesize concentrateLabel;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];

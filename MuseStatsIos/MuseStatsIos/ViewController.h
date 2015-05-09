@@ -7,6 +7,12 @@
 
 @interface ViewController : UIViewController
 
+{
+    
+    IBOutlet UILabel *concentrateLabel;
+}
+
+@property (retain, nonatomic) IBOutlet UILabel *concentrateLabel;
 
 @end
 
