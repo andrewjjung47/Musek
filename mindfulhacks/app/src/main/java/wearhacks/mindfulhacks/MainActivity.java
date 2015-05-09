@@ -14,6 +14,8 @@ import com.estimote.sdk.Beacon;
 
 public class MainActivity extends ActionBarActivity {
 
+    MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +48,23 @@ public class MainActivity extends ActionBarActivity {
         });
 
         // Automatically plays local file uptownfunk in /res/raw
-        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.uptownfunk);
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.uptownfunk);
         mediaPlayer.start(); // no need to call prepare(); create() does that for you
     }
 
+    @Override
+    protected void onPause() {
+
+        mediaPlayer.pause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+
+        mediaPlayer.start();
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
