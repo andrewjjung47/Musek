@@ -1,5 +1,6 @@
 package wearhacks.mindfulhacks;
 
+import android.media.AudioManager;
 import android.os.RemoteException;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -388,6 +390,17 @@ public class MainActivity extends Activity implements OnClickListener {
 //            }
 //        });
 
+
+//        String url = "http://podcast.cbc.ca/mp3/podcasts/current_20150508_81750.mp3"; // your URL here
+//        MediaPlayer mediaPlayer = new MediaPlayer();
+//        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//        try {
+//            mediaPlayer.setDataSource(url);
+//            mediaPlayer.prepare(); // might take long! (for buffering, etc)
+//            mediaPlayer.start();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         // Automatically plays local file uptownfunk in /res/raw
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.uptownfunk);
 //        mediaPlayer.start(); // no need to call prepare(); create() does that for you
