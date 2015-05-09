@@ -10,8 +10,12 @@
 
     <TextView
         android:id="@+id/TV1"
-        android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="@string/hello_world" android:layout_width="150dp"
+        android:layout_height="30dp" />
+    <TextView
+        android:id="@+id/TV2"
+        android:layout_width="150dp"
+        android:layout_height="30dp" />
 
     <Button
         android:id="@+id/btn1"
