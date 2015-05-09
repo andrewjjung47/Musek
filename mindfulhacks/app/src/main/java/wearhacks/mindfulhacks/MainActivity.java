@@ -54,7 +54,7 @@ import com.estimote.sdk.Beacon;
 
 public class MainActivity extends Activity implements OnClickListener {
 
-    MediaPlayer mediaPlayer;
+    MediaHandler mediaHandler;
 
     private EstimoteDetector estimoteDetector;
 
@@ -323,6 +323,8 @@ public class MainActivity extends Activity implements OnClickListener {
         // Creates new EstimoteDetector class
         estimoteDetector = new EstimoteDetector(this);
 
+        mediaHandler = new MediaHandler(this);
+
 
 //        String url = "http://podcast.cbc.ca/mp3/podcasts/current_20150508_81750.mp3"; // your URL here
 //        MediaPlayer mediaPlayer = new MediaPlayer();
@@ -334,8 +336,6 @@ public class MainActivity extends Activity implements OnClickListener {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        // Automatically plays local file uptownfunk in /res/raw
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.uptownfunk);
 //        mediaPlayer.start(); // no need to call prepare(); create() does that for you
     }
 
@@ -466,106 +466,12 @@ public class MainActivity extends Activity implements OnClickListener {
     private void debug() {
         Log.v("dbg", "Debug");
 
-        if (mediaPlayer.isPlaying()) {
+        if (MediaHandler.isPlaying()) {
             //mediaPlayer.pause();
-            fadeOut();
+            MediaHandler.fadeOut();
         } else {
             //mediaPlayer.start();
-            fadeIn();
+            MediaHandler.fadeIn();
         }
-    }
-
-    private int MAX_INT_VOLUME = 100;
-    private int MIN_INT_VOLUME = 0;
-    private float MAX_FLOAT_VOLUME = 1;
-    private float MIN_FLOAT_VOLUME = 0;
-
-    private int iVolume = 50;
-    private int cVolume;
-
-    private void updateVolume(int change) {
-        cVolume += change;
-
-        // Clamp volume within valid ranges
-        if (cVolume > MAX_INT_VOLUME) {
-            cVolume = MAX_INT_VOLUME;
-        }
-
-        if (cVolume < MIN_INT_VOLUME) {
-            cVolume = MIN_INT_VOLUME;
-        }
-
-        //convert to float value
-        float fVolume = 1 - ((float) Math.log(MAX_INT_VOLUME - cVolume) / (float) Math.log(MAX_INT_VOLUME));
-
-        if (fVolume > MAX_FLOAT_VOLUME) {
-            fVolume = MAX_FLOAT_VOLUME;
-        }
-
-        if (fVolume < MIN_FLOAT_VOLUME) {
-            fVolume = MIN_FLOAT_VOLUME;
-        }
-
-        mediaPlayer.setVolume(fVolume, fVolume);
-    }
-
-    private void fadeOut() {
-        float fadeDuration = 5;
-
-        AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
-        iVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
-        cVolume = iVolume;
-
-        final Timer timer = new Timer(true);
-        TimerTask timerTask = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                updateVolume(-1);
-                if (cVolume == MIN_INT_VOLUME)
-                {
-                    timer.cancel();
-                    timer.purge();
-                    mediaPlayer.pause();
-                }
-            }
-        };
-
-        // calculate delay, cannot be zero, set to 1 if zero
-        int delay = (int) fadeDuration/iVolume;
-        if (delay == 0) delay = 1;
-
-        timer.schedule(timerTask, delay, delay);
-    }
-
-    private void fadeIn() {
-        float fadeDuration = 5;
-
-        AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
-        iVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
-        cVolume = iVolume;
-
-        final Timer timer = new Timer(true);
-        TimerTask timerTask = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                updateVolume(1);
-                if (cVolume == MAX_INT_VOLUME)
-                {
-                    timer.cancel();
-                    timer.purge();
-                    mediaPlayer.start();
-                }
-            }
-        };
-
-        // calculate delay, cannot be zero, set to 1 if zero
-        int delay = (int) fadeDuration/iVolume;
-        if (delay == 0) delay = 1;
-
-        timer.schedule(timerTask, delay, delay);
     }
 }
