@@ -2,8 +2,11 @@ package wearhacks.mindfulhacks;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +15,32 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initialize();
+    }
+
+    private void initialize() {
+        Button btn = (Button) findViewById(R.id.btn1);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                connect();
+            }
+
+        });
+
+        btn = (Button) findViewById(R.id.btn2);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                debug();
+            }
+
+        });
     }
 
 
@@ -35,5 +64,13 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void connect() {
+        Log.v("dbg", "Connect");
+    }
+
+    private void debug() {
+        Log.v("dbg", "Debug");
     }
 }
