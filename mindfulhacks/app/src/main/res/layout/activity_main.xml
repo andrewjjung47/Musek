@@ -147,27 +147,24 @@
                 android:textSize="16sp"
                 android:text="@string/init_val" />
         </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:text="@string/version" />
-        <TextView
-            android:id="@+id/version"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:text="@string/undefined" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:text="@string/user_state"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="horizontal" >
-            <Button
-                android:id="@+id/pause"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:text="@string/pause" />
+            <TextView
+                android:id="@+id/userState"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:text="@string/undefined" />
         </LinearLayout>
 </LinearLayout>

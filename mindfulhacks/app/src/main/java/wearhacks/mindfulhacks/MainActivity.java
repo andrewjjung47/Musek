@@ -91,17 +91,12 @@ public class MainActivity extends Activity implements OnClickListener {
                         TextView statusText =
                                 (TextView) findViewById(R.id.con_status);
                         statusText.setText(status);
-                        TextView museVersionText =
-                                (TextView) findViewById(R.id.version);
                         if (current == ConnectionState.CONNECTED) {
                             MuseVersion museVersion = muse.getMuseVersion();
                             String version = museVersion.getFirmwareType() +
                                     " - " + museVersion.getFirmwareVersion() +
                                     " - " + Integer.toString(
                                     museVersion.getProtocolVersion());
-                            museVersionText.setText(version);
-                        } else {
-                            museVersionText.setText(R.string.undefined);
                         }
                     }
                 });
@@ -225,7 +220,16 @@ public class MainActivity extends Activity implements OnClickListener {
                 userState = UserState.HIHI;
             }
 
-            Log.v("dbg", userState.toString());
+            Activity activity = activityRef.get();
+            if (activity != null) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView state = (TextView) findViewById(R.id.userState);
+                        state.setText(userState.toString());
+                    }
+                });
+            }
         }
 
         public void setFileWriter(MuseFileWriter fileWriter) {
@@ -238,15 +242,31 @@ public class MainActivity extends Activity implements OnClickListener {
     private DataListener dataListener = null;
     private boolean dataTransmission = true;
     private MuseFileWriter fileWriter = null;
-    private UserState userState = null;
+    private UserState userState = UserState.LOLO;
     private Double mellow = 0.0;
     private Double conc = 0.0;
 
     public enum UserState {
-        LOLO,
-        LOHI,
-        HILO,
-        HIHI
+        LOLO {
+            public String toString() {
+                return "LOLO";
+            }
+        },
+        LOHI {
+            public String toString() {
+                return "LOHI";
+            }
+        },
+        HILO {
+            public String toString() {
+                return "HILO";
+            }
+        },
+        HIHI {
+            public String toString() {
+                return "HIHI";
+            }
+        }
     }
 
     public MainActivity() {
@@ -268,8 +288,6 @@ public class MainActivity extends Activity implements OnClickListener {
         connectButton.setOnClickListener(this);
         Button disconnectButton = (Button) findViewById(R.id.disconnect);
         disconnectButton.setOnClickListener(this);
-        Button pauseButton = (Button) findViewById(R.id.pause);
-        pauseButton.setOnClickListener(this);
         fileWriter = MuseFileWriterFactory.getMuseFileWriter(new File(
                 getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
                 "testlibmusefile.muse"));
@@ -493,12 +511,6 @@ public class MainActivity extends Activity implements OnClickListener {
                 fileWriter.addAnnotationString(1, "Disconnect clicked");
                 fileWriter.flush();
                 fileWriter.close();
-            }
-        }
-        else if (v.getId() == R.id.pause) {
-            dataTransmission = !dataTransmission;
-            if (muse != null) {
-                muse.enableDataTransmission(dataTransmission);
             }
         }
     }

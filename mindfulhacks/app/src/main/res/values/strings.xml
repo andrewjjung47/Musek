@@ -20,5 +20,6 @@
     <string name="muse_elem">Elements:</string>
     <string name="muse_conc">Concentration:</string>
     <string name="muse_mellow">Mellow:</string>
+    <string name="user_state">User State:</string>
 
 </resources>
