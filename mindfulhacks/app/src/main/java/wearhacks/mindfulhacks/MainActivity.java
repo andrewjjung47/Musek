@@ -1,6 +1,7 @@
 package wearhacks.mindfulhacks;
 
 import android.os.RemoteException;
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.estimote.sdk.BeaconManager;
@@ -23,6 +25,8 @@ public class MainActivity extends ActionBarActivity {
     private BeaconManager beaconManager;
     private Beacon beacon;
     private Region region;
+
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +91,28 @@ public class MainActivity extends ActionBarActivity {
                             double distance = Math.min(Utils.computeAccuracy(foundBeacon), 6.0);
                             //updateDistanceView(foundBeacon);
                             Log.v("dbg", distance + "");
+                            TextView tv = (TextView) findViewById(R.id.TV1);
+                            tv.setText(String.valueOf(distance));
                         }
                     }
                 });
             }
         });
+
+        // Automatically plays local file uptownfunk in /res/raw
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.uptownfunk);
+//        mediaPlayer.start(); // no need to call prepare(); create() does that for you
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,5 +157,11 @@ public class MainActivity extends ActionBarActivity {
 
     private void debug() {
         Log.v("dbg", "Debug");
+
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        } else {
+            mediaPlayer.start();
+        }
     }
 }
