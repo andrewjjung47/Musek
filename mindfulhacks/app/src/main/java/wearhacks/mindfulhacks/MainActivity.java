@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 import com.estimote.sdk.Utils;
+import com.estimote.sdk.cloud.internal.User;
 import com.interaxon.libmuse.Accelerometer;
 import com.interaxon.libmuse.ConnectionState;
 import com.interaxon.libmuse.Eeg;
@@ -230,6 +231,8 @@ public class MainActivity extends Activity implements OnClickListener {
                     }
                 });
             }
+
+            updateUserState(data, "conc");
         }
 
         private void updateMellow(final ArrayList<Double> data) {
@@ -244,6 +247,32 @@ public class MainActivity extends Activity implements OnClickListener {
                     }
                 });
             }
+
+            updateUserState(data, "mellow");
+        }
+
+        private void updateUserState(final ArrayList<Double> data, String dataType) {
+            if (dataType == "mellow") {
+                mellow = data.get(0);
+            }
+            else if (dataType == "conc"){
+                conc = data.get(0);
+            }
+
+            if (mellow < 50 && conc < 50) {
+                userState = UserState.LOLO;
+            }
+            else if (mellow < 50 & conc >= 50) {
+                userState = UserState.LOHI;
+            }
+            else if (mellow >= 50 & conc < 50) {
+                userState = UserState.HILO;
+            }
+            else if (mellow >= 50 & conc >= 50) {
+                userState = UserState.HIHI;
+            }
+
+            Log.v("dbg", userState.toString());
         }
 
         public void setFileWriter(MuseFileWriter fileWriter) {
@@ -256,6 +285,16 @@ public class MainActivity extends Activity implements OnClickListener {
     private DataListener dataListener = null;
     private boolean dataTransmission = true;
     private MuseFileWriter fileWriter = null;
+    private UserState userState = null;
+    private Double mellow = 0.0;
+    private Double conc = 0.0;
+
+    public enum UserState {
+        LOLO,
+        LOHI,
+        HILO,
+        HIHI
+    }
 
     public MainActivity() {
         // Create listeners and pass reference to activity to them
