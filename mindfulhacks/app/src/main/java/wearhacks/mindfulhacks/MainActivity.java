@@ -52,12 +52,9 @@ import com.estimote.sdk.Beacon;
 
 public class MainActivity extends Activity implements OnClickListener {
 
-    private BeaconManager beaconManager;
-    private ArrayList<Beacon> beacons;
-
-    private static final Region ALL_ESTIMOTE_BEACONS_REGION = new Region("rid", null, null, null);
-
     MediaPlayer mediaPlayer;
+
+    private EstimoteDetector estimoteDetector;
 
 
     /**
@@ -314,51 +311,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
         });
 
-        // Initializing beacon, region, and manager to connect to estimote
-        beacons = new ArrayList<Beacon>();
-        beacons.add(new Beacon("b9407f30-f5f8-466e-aff9-25556b57fe6d",
-                "estimote",
-                "E5:3D:D0:63:FD:88",
-                64904, 53347,
-                -74, -62));
-
-        beacons.add(new Beacon("b9407f30-f5f8-466e-aff9-25556b57fe6d",
-                "estimote",
-                "E5:3D:D0:63:FD:88",
-                10470, 33680,
-                -74, -41));
-
-        beaconManager = new BeaconManager(this);
-
-        // Default values are 5s of scanning and 25s of waiting time to save CPU cycles.
-        // In order for this demo to be more responsive and immediate we lower down those values.
-        beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
-
-        final ArrayList<Beacon> beaconList = new ArrayList<Beacon>(beacons);
-
-        // Configure BeaconManager.
-        beaconManager = new BeaconManager(this);
-        beaconManager.setRangingListener(new BeaconManager.RangingListener() {
-            @Override
-            public void onBeaconsDiscovered(Region region, final List<Beacon> beacons) {
-                for (Beacon rangedBeacon : beacons) {
-                    Log.v("dbg", rangedBeacon.getMajor() + "");
-                    if (rangedBeacon.getMajor() == beaconList.get(0).getMajor()) {
-                        double distance = Math.min(Utils.computeAccuracy(rangedBeacon), 6.0);
-                        Log.v("dbg", distance + "");
-                        TextView tv = (TextView) findViewById(R.id.TV1);
-                        tv.setText(String.valueOf(distance));
-                    } else if (rangedBeacon.getMajor() == beaconList.get(1).getMajor()) {
-                        Log.v("dbg", "In region of beacon 1");
-                        double distance = Math.min(Utils.computeAccuracy(rangedBeacon), 6.0);
-                        //updateDistanceView(foundBeacon);
-                        Log.v("dbg", distance + "");
-                        TextView tv = (TextView) findViewById(R.id.TV2);
-                        tv.setText(String.valueOf(distance));
-                    }
-                }
-            }
-        });
+        // Creates new EstimoteDetector class
+        estimoteDetector = new EstimoteDetector(this);
 
         // Automatically plays local file uptownfunk in /res/raw
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.uptownfunk);
@@ -491,16 +445,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private void connect() {
         Log.v("dbg", "Connect");
 
-        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
-            @Override
-            public void onServiceReady() {
-                try {
-                    beaconManager.startRanging(ALL_ESTIMOTE_BEACONS_REGION);
-                } catch (RemoteException e) {
-                    Log.e("Connect", "Cannot start ranging", e);
-                }
-            }
-        });
+        estimoteDetector.connect();
 
     }
 
