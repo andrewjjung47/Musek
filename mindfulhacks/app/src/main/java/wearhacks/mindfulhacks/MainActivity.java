@@ -1,5 +1,6 @@
 package wearhacks.mindfulhacks;
 
+import android.os.RemoteException;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,11 +8,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.Region;
+import com.estimote.sdk.Utils;
 import com.interaxon.libmuse.Accelerometer;
 import com.estimote.sdk.Beacon;
 
+import java.util.List;
+
 public class MainActivity extends ActionBarActivity {
+
+    private BeaconManager beaconManager;
+    private Beacon beacon;
+    private Region region;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +54,44 @@ public class MainActivity extends ActionBarActivity {
             }
 
         });
+
+        // Initializing beacon, region, and manager to connect to estimote
+        beacon = new Beacon("b9407f30-f5f8-466e-aff9-25556b57fe6d",
+                            "estimote",
+                            "E5:3D:D0:63:FD:88",
+                            64904, 53347,
+                            -74, -62);
+
+        region = new Region("regionid", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor());
+        if (beacon == null) {
+            Toast.makeText(this, "Beacon not found in intent extras", Toast.LENGTH_LONG).show();
+            finish();
+        }
+
+        beaconManager = new BeaconManager(this);
+        beaconManager.setRangingListener(new BeaconManager.RangingListener() {
+            @Override
+            public void onBeaconsDiscovered(Region region, final List<Beacon> rangedBeacons) {
+                // Note that results are not delivered on UI thread.
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Just in case if there are multiple beacons with the same uuid, major, minor.
+                        Beacon foundBeacon = null;
+                        for (Beacon rangedBeacon : rangedBeacons) {
+                            if (rangedBeacon.getMacAddress().equals(beacon.getMacAddress())) {
+                                foundBeacon = rangedBeacon;
+                            }
+                        }
+                        if (foundBeacon != null) {
+                            double distance = Math.min(Utils.computeAccuracy(foundBeacon), 6.0);
+                            //updateDistanceView(foundBeacon);
+                            Log.v("dbg", distance + "");
+                        }
+                    }
+                });
+            }
+        });
     }
 
 
@@ -70,6 +119,21 @@ public class MainActivity extends ActionBarActivity {
 
     private void connect() {
         Log.v("dbg", "Connect");
+
+        // Connect to estimote
+        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
+            @Override
+            public void onServiceReady() {
+                try {
+                    beaconManager.startRanging(region);
+                } catch (RemoteException e) {
+                    Toast.makeText(MainActivity.this, "Cannot start ranging, something terrible happened",
+                            Toast.LENGTH_LONG).show();
+                    Log.e("dbg", "Cannot start ranging", e);
+                }
+            }
+        });
+
     }
 
     private void debug() {
