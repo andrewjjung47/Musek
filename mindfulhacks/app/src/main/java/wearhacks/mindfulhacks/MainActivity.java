@@ -121,12 +121,6 @@ public class MainActivity extends Activity implements OnClickListener {
         @Override
         public void receiveMuseDataPacket(MuseDataPacket p) {
             switch (p.getPacketType()) {
-                case EEG:
-                    updateEeg(p.getValues());
-                    break;
-                case ACCELEROMETER:
-                    updateAccelerometer(p.getValues());
-                    break;
                 case ALPHA_RELATIVE:
                     updateAlphaRelative(p.getValues());
                     break;
@@ -152,49 +146,6 @@ public class MainActivity extends Activity implements OnClickListener {
         public void receiveMuseArtifactPacket(MuseArtifactPacket p) {
             if (p.getHeadbandOn() && p.getBlink()) {
                 Log.i("Artifacts", "blink");
-            }
-        }
-
-        private void updateAccelerometer(final ArrayList<Double> data) {
-            Activity activity = activityRef.get();
-            if (activity != null) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        TextView acc_x = (TextView) findViewById(R.id.acc_x);
-                        TextView acc_y = (TextView) findViewById(R.id.acc_y);
-                        TextView acc_z = (TextView) findViewById(R.id.acc_z);
-                        acc_x.setText(String.format(
-                                "%6.2f", data.get(Accelerometer.FORWARD_BACKWARD.ordinal())));
-                        acc_y.setText(String.format(
-                                "%6.2f", data.get(Accelerometer.UP_DOWN.ordinal())));
-                        acc_z.setText(String.format(
-                                "%6.2f", data.get(Accelerometer.LEFT_RIGHT.ordinal())));
-                    }
-                });
-            }
-        }
-
-        private void updateEeg(final ArrayList<Double> data) {
-            Activity activity = activityRef.get();
-            if (activity != null) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        TextView tp9 = (TextView) findViewById(R.id.eeg_tp9);
-                        TextView fp1 = (TextView) findViewById(R.id.eeg_fp1);
-                        TextView fp2 = (TextView) findViewById(R.id.eeg_fp2);
-                        TextView tp10 = (TextView) findViewById(R.id.eeg_tp10);
-                        tp9.setText(String.format(
-                                "%6.2f", data.get(Eeg.TP9.ordinal())));
-                        fp1.setText(String.format(
-                                "%6.2f", data.get(Eeg.FP1.ordinal())));
-                        fp2.setText(String.format(
-                                "%6.2f", data.get(Eeg.FP2.ordinal())));
-                        tp10.setText(String.format(
-                                "%6.2f", data.get(Eeg.TP10.ordinal())));
-                    }
-                });
             }
         }
 
