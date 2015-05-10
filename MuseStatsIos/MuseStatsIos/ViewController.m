@@ -5,6 +5,7 @@
 
 #import "ViewController.h"
 
+
 @interface ViewController ()
 
 @end
@@ -18,7 +19,12 @@
     [super viewDidLoad];
     self.concentrateText=@"0";
     
-    self.concentrateLabel.text = self.concentrateText;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notify:) name:@"museData" object:nil];
+    
+  
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -26,4 +32,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+- (void)notify:(NSNotification *)notification {
+    NSLog(@"Notified!");
+    self.concentrateLabel.text = [notification object];
+    
+    //do stuff
+}
 @end

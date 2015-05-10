@@ -18,7 +18,9 @@
 @property (nonatomic) id<IXNMuseFileWriter> fileWriter;
 @end
 
-@implementation LoggingListener
+@implementation LoggingListener {
+    IXNMuseDataPacket * _packet;
+}
 
 - (instancetype)initWithDelegate:(AppDelegate *)delegate {
     _delegate = delegate;
@@ -38,6 +40,9 @@
 }
 
 - (void)receiveMuseDataPacket:(IXNMuseDataPacket *)packet {
+ //   [[NSNotificationCenter defaultCenter] postNotificationName:@"Event" object:UIViewController];
+
+    
     switch (packet.packetType) {
         case IXNMuseDataPacketTypeBattery:
             NSLog(@"battery packet received");
@@ -54,6 +59,12 @@
             
             
              NSLog(@"Concentrate:");
+            
+            _packet= packet;
+            
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"museData" object:_packet.values[0]];
+            
             NSLog(@"%@", packet.values[0]);
             
            // self.concentrateLabel.text =packet.values[0];
@@ -67,6 +78,7 @@
         case IXNMuseDataPacketTypeMellow:
             
             NSLog(@"Mellow:");
+            
             
             NSLog(@"%@", packet.values[0]);
             
@@ -129,5 +141,9 @@
                             afterDelay:0];
     }
 }
+
+
+
+
 
 @end
