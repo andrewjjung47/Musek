@@ -32,12 +32,14 @@ public class MediaHandler {
     static private int iVolume = 50;
     static private int cVolume;
 
+    final MainActivity main;
+
     public MediaHandler(MainActivity mainActivity) {
 
-        final MainActivity main = mainActivity;
+        main = mainActivity;
 
         // Automatically plays local file uptownfunk in /res/raw
-        musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.uptownfunk);
+        musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.lolo);
 
         String url = "http://podcast.cbc.ca/mp3/podcasts/current_20150508_81750.mp3"; // your URL here
         podcastPlayer = new MediaPlayer();
@@ -87,6 +89,23 @@ public class MediaHandler {
 
     static public boolean isPlaying() {
         return (musicPlayer.isPlaying() | podcastPlayer.isPlaying());
+    }
+
+    public void updateMusic(String state) {
+        if (musicPlayer.isPlaying()) {
+            musicPlayer.stop();
+            musicPlayer.release();
+        }
+        if (state == "LOLO") {
+            musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.lolo);
+        } else if (state == "LOHI") {
+            musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.lohi);
+        } else if (state == "HILO") {
+            musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.hilo);
+        } else {
+            musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.hihi);
+        }
+        musicPlayer.start();
     }
 
     static public void pause() {

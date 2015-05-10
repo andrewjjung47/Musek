@@ -42,8 +42,11 @@ public class MindfulMuse {
     private MindfulMuse.UserState userState = MindfulMuse.UserState.LOLO;
     private Double mellow = 0.0;
     private Double conc = 0.0;
+    public String oldState = "unknown";
+    public MediaHandler mh;
 
     public MindfulMuse(final MainActivity main, File file) {
+        mh = main.mediaHandler;
         WeakReference<Activity> activityRef =
                 new WeakReference<Activity>(main);
 
@@ -224,6 +227,11 @@ public class MindfulMuse {
                     public void run() {
                         TextView state = (TextView) activity.findViewById(R.id.userState);
                         state.setText(userState.toString());
+                        String currentState = userState.toString();
+                        if (currentState != oldState) {
+                            mh.updateMusic(currentState);
+                            oldState = currentState;
+                        }
                     }
                 });
             }
