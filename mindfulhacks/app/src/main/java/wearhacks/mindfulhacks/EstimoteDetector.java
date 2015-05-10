@@ -54,11 +54,8 @@ public class EstimoteDetector {
             @Override
             public void onBeaconsDiscovered(Region region, final List<Beacon> beacons) {
                 for (Beacon rangedBeacon : beacons) {
-                    Log.v("dbg", rangedBeacon.getMajor() + "");
                     if (rangedBeacon.getMajor() == beaconList.get(0).getMajor()) {
-                        Log.v("dbg", "In region of beacon 0");
                         double distance = Math.min(Utils.computeAccuracy(rangedBeacon), 6.0);
-                        Log.v("dbg", distance + "");
                         TextView tv = (TextView) main.findViewById(R.id.TV1);
                         tv.setText(String.valueOf(distance));
 
@@ -67,14 +64,6 @@ public class EstimoteDetector {
                         } else {
                             main.mediaHandler.activatePodcast(false);
                         }
-
-                    } else if (rangedBeacon.getMajor() == beaconList.get(1).getMajor()) {
-                        Log.v("dbg", "In region of beacon 1");
-                        double distance = Math.min(Utils.computeAccuracy(rangedBeacon), 6.0);
-                        //updateDistanceView(foundBeacon);
-                        Log.v("dbg", distance + "");
-                        TextView tv = (TextView) main.findViewById(R.id.TV2);
-                        tv.setText(String.valueOf(distance));
                     }
                 }
             }
