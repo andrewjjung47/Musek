@@ -59,7 +59,7 @@ public class EstimoteDetector {
 //                        TextView tv = (TextView) main.findViewById(R.id.TV1);
 //                        tv.setText(String.valueOf(distance));
 
-                        if (distance < 2.0) {
+                        if (distance < 1.0) {
                             main.mediaHandler.activatePodcast(true);
                         } else {
                             main.mediaHandler.activatePodcast(false);

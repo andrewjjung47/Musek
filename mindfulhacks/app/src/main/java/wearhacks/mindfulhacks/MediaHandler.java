@@ -224,23 +224,25 @@ public class MediaHandler {
         if (togglePodcast == true) {
             // we need to activate podcast
             if (musicPlayer.isPlaying() == true) {
-                musicPlayer.pause();
-                podcastPlayer.start();
                 TextView brainmood = (TextView) main.findViewById(R.id.brainmood);
                 brainmood.setText("Room:");
                 TextView userState = (TextView) main.findViewById(R.id.userState);
                 brainState = userState.getText().toString();
                 userState.setText("Kitchen");
+
+                musicPlayer.pause();
+                podcastPlayer.start();
             }
         } else {
             // we need to deactivate podcast
             if (podcastPlayer.isPlaying() == true) {
-                podcastPlayer.pause();
-                musicPlayer.start();
                 TextView brainmood = (TextView) main.findViewById(R.id.brainmood);
                 brainmood.setText("Brain Mood:");
                 TextView userState = (TextView) main.findViewById(R.id.userState);
                 userState.setText(brainState);
+
+                podcastPlayer.pause();
+                musicPlayer.start();
             }
         }
     }

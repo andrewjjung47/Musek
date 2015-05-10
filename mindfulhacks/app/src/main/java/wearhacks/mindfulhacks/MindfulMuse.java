@@ -232,13 +232,15 @@ public class MindfulMuse {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TextView state = (TextView) activity.findViewById(R.id.userState);
-                        state.setText(userState.toString());
-                        state.setTypeface(null, Typeface.BOLD);
-                        String currentState = userState.toString();
-                        if (currentState != oldState) {
-                            mh.updateMusic(currentState);
-                            oldState = currentState;
+                        if (!mh.isPodcastPlaying()) {
+                            TextView state = (TextView) activity.findViewById(R.id.userState);
+                            state.setText(userState.toString());
+                            state.setTypeface(null, Typeface.BOLD);
+                            String currentState = userState.toString();
+                            if (currentState != oldState) {
+                                mh.updateMusic(currentState);
+                                oldState = currentState;
+                            }
                         }
                     }
                 });
