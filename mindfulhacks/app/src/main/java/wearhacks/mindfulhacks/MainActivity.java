@@ -107,22 +107,10 @@ public class MainActivity extends Activity implements OnClickListener {
 
         mediaHandler = new MediaHandler(this);
 
-
-//        String url = "http://podcast.cbc.ca/mp3/podcasts/current_20150508_81750.mp3"; // your URL here
-//        MediaPlayer mediaPlayer = new MediaPlayer();
-//        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//        try {
-//            mediaPlayer.setDataSource(url);
-//            mediaPlayer.prepare(); // might take long! (for buffering, etc)
-//            mediaPlayer.start();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        mediaPlayer.start(); // no need to call prepare(); create() does that for you
-
         mindfulMuse = new MindfulMuse(this, new File(
                 getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
                 "testlibmusefile.muse"));
+
     }
 
     @Override
