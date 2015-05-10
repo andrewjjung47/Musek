@@ -328,22 +328,22 @@ public class MindfulMuse {
     public static enum UserState {
         LOLO {
             public String toString() {
-                return "LOLO";
+                return "Relaxed";
             }
         },
         LOHI {
             public String toString() {
-                return "LOHI";
+                return "Focused";
             }
         },
         HILO {
             public String toString() {
-                return "HILO";
+                return "Alert";
             }
         },
         HIHI {
             public String toString() {
-                return "HIHI";
+                return "Excited";
             }
         }
     }

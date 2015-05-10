@@ -39,7 +39,7 @@ public class MediaHandler {
         main = mainActivity;
 
         // Automatically plays local file uptownfunk in /res/raw
-        musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.lolo);
+        musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.relaxed);
 
         String url = "http://podcast.cbc.ca/mp3/podcasts/current_20150508_81750.mp3"; // your URL here
         podcastPlayer = new MediaPlayer();
@@ -96,14 +96,14 @@ public class MediaHandler {
             musicPlayer.stop();
             musicPlayer.release();
         }
-        if (state == "LOLO") {
-            musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.lolo);
-        } else if (state == "LOHI") {
-            musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.lohi);
-        } else if (state == "HILO") {
-            musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.hilo);
+        if (state == "Relaxed") {
+            musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.relaxed);
+        } else if (state == "Focused") {
+            musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.focused);
+        } else if (state == "Alert") {
+            musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.alert);
         } else {
-            musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.hihi);
+            musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.excited);
         }
         musicPlayer.start();
     }

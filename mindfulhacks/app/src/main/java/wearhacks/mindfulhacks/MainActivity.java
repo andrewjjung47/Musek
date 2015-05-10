@@ -1,58 +1,18 @@
 package wearhacks.mindfulhacks;
 
-import android.media.AudioManager;
-import android.os.RemoteException;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
 import android.os.Environment;
-import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
-
-import com.estimote.sdk.BeaconManager;
-import com.estimote.sdk.Region;
-import com.estimote.sdk.Utils;
-import com.estimote.sdk.cloud.internal.User;
-import com.interaxon.libmuse.Accelerometer;
-import com.interaxon.libmuse.ConnectionState;
-import com.interaxon.libmuse.Eeg;
-import com.interaxon.libmuse.LibMuseVersion;
-import com.interaxon.libmuse.Muse;
-import com.interaxon.libmuse.MuseArtifactPacket;
-import com.interaxon.libmuse.MuseConnectionListener;
-import com.interaxon.libmuse.MuseConnectionPacket;
-import com.interaxon.libmuse.MuseDataListener;
-import com.interaxon.libmuse.MuseDataPacket;
-import com.interaxon.libmuse.MuseDataPacketType;
-import com.interaxon.libmuse.MuseFileWriter;
-import com.interaxon.libmuse.MuseFileWriterFactory;
-import com.interaxon.libmuse.MuseManager;
-import com.interaxon.libmuse.MusePreset;
-import com.interaxon.libmuse.MuseVersion;
-
-import wearhacks.mindfulhacks.MindfulMuse;
-
-import com.estimote.sdk.Beacon;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -74,7 +34,6 @@ public class MainActivity extends Activity implements OnClickListener {
         connectButton.setOnClickListener(this);
         Button disconnectButton = (Button) findViewById(R.id.disconnect);
         disconnectButton.setOnClickListener(this);
-
 
         initialize();
     }
