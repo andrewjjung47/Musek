@@ -1,6 +1,7 @@
 package wearhacks.mindfulhacks;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -227,6 +228,7 @@ public class MindfulMuse {
                     public void run() {
                         TextView state = (TextView) activity.findViewById(R.id.userState);
                         state.setText(userState.toString());
+                        state.setTypeface(null, Typeface.BOLD);
                         String currentState = userState.toString();
                         if (currentState != oldState) {
                             mh.updateMusic(currentState);
