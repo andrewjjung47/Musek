@@ -12,6 +12,6 @@
         android:id="@+id/startupIB"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:drawable="@drawable/ic_launcher" />
+        android:drawable="@drawable/appicon" />
 
 </RelativeLayout>
