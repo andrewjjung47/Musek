@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.os.RemoteException;
 import android.media.MediaPlayer;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -14,6 +15,8 @@ import java.util.TimerTask;
  * Class in charge of playing media. Usually a static instance.
  */
 public class MediaHandler {
+
+    public String brainState;
 
     static public MediaPlayer musicPlayer;
     static public MediaPlayer podcastPlayer;
@@ -216,19 +219,28 @@ public class MediaHandler {
         timer.schedule(timerTask, delay, delay);
     }
 
-    static public void activatePodcast(boolean podcastactive) {
+    public void activatePodcast(boolean podcastactive) {
         togglePodcast = podcastactive;
         if (togglePodcast == true) {
             // we need to activate podcast
             if (musicPlayer.isPlaying() == true) {
                 musicPlayer.pause();
                 podcastPlayer.start();
+                TextView brainmood = (TextView) main.findViewById(R.id.brainmood);
+                brainmood.setText("Room:");
+                TextView userState = (TextView) main.findViewById(R.id.userState);
+                brainState = userState.getText().toString();
+                userState.setText("Kitchen");
             }
         } else {
             // we need to deactivate podcast
             if (podcastPlayer.isPlaying() == true) {
                 podcastPlayer.pause();
                 musicPlayer.start();
+                TextView brainmood = (TextView) main.findViewById(R.id.brainmood);
+                brainmood.setText("Brain Mood:");
+                TextView userState = (TextView) main.findViewById(R.id.userState);
+                userState.setText(brainState);
             }
         }
     }
