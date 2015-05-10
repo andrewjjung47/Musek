@@ -126,12 +126,6 @@ public class MindfulMuse {
                     if (fileWriter.getBufferedMessagesSize() > 8096)
                         fileWriter.flush();
                     break;
-                case CONCENTRATION:
-                    updateConcentration(p.getValues());
-                    break;
-                case MELLOW:
-                    updateMellow(p.getValues());
-                    break;
                 default:
                     break;
             }
@@ -165,38 +159,6 @@ public class MindfulMuse {
                     }
                 });
             }
-        }
-
-        private void updateConcentration(final ArrayList<Double> data) {
-            final Activity activity = activityRef.get();
-            if (activity != null) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        TextView conc = (TextView) activity.findViewById(R.id.conc);
-                        conc.setText(String.format(
-                                "%6.2f", data.get(0)));
-                    }
-                });
-            }
-
-            updateUserState(data, "conc");
-        }
-
-        private void updateMellow(final ArrayList<Double> data) {
-            final Activity activity = activityRef.get();
-            if (activity != null) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        TextView mellow = (TextView) activity.findViewById(R.id.mellow);
-                        mellow.setText(String.format(
-                                "%6.2f", data.get(0)));
-                    }
-                });
-            }
-
-            updateUserState(data, "mellow");
         }
 
         private void updateUserState(final ArrayList<Double> data, String dataType) {
@@ -242,66 +204,59 @@ public class MindfulMuse {
         }
     }
 
-    public void processInput(View v, Spinner musesSpinner, MainActivity main) {
-        if (v.getId() == R.id.refresh) {
-            MuseManager.refreshPairedMuses();
-            List<Muse> pairedMuses = MuseManager.getPairedMuses();
-            List<String> spinnerItems = new ArrayList<String>();
-            for (Muse m: pairedMuses) {
-                String dev_id = m.getName() + "-" + m.getMacAddress();
-                Log.i("Muse Headband", dev_id);
-                spinnerItems.add(dev_id);
-            }
-            ArrayAdapter<String> adapterArray = new ArrayAdapter<String> (
-                    main, android.R.layout.simple_spinner_item, spinnerItems);
-            musesSpinner.setAdapter(adapterArray);
+    public void connect() {
+        // Refresh
+        MuseManager.refreshPairedMuses();
+        List<Muse> pairedMuses = MuseManager.getPairedMuses();
+        for (Muse m: pairedMuses) {
+            String dev_id = m.getName() + "-" + m.getMacAddress();
+            Log.i("Muse Headband", dev_id);
         }
-        else if (v.getId() == R.id.connect) {
-            List<Muse> pairedMuses = MuseManager.getPairedMuses();
-            if (pairedMuses.size() < 1 ||
-                    musesSpinner.getAdapter().getCount() < 1) {
-                Log.w("Muse Headband", "There is nothing to connect to");
+
+        // Connect
+        if (pairedMuses.size() < 1) {
+            Log.w("Muse Headband", "There is nothing to connect to");
+        }
+        else {
+            muse = pairedMuses.get(0);
+            ConnectionState state = muse.getConnectionState();
+            if (state == ConnectionState.CONNECTED ||
+                    state == ConnectionState.CONNECTING) {
+                Log.w("Muse Headband", "doesn't make sense to connect second time to the same muse");
+                return;
             }
-            else {
-                muse = pairedMuses.get(musesSpinner.getSelectedItemPosition());
-                ConnectionState state = muse.getConnectionState();
-                if (state == ConnectionState.CONNECTED ||
-                        state == ConnectionState.CONNECTING) {
-                    Log.w("Muse Headband", "doesn't make sense to connect second time to the same muse");
-                    return;
-                }
-                configure_library();
-                fileWriter.open();
-                fileWriter.addAnnotationString(1, "Connect clicked");
-                /**
-                 * In most cases libmuse native library takes care about
-                 * exceptions and recovery mechanism, but native code still
-                 * may throw in some unexpected situations (like bad bluetooth
-                 * connection). Print all exceptions here.
-                 */
-                try {
-                    muse.runAsynchronously();
-                } catch (Exception e) {
-                    Log.e("Muse Headband", e.toString());
-                }
+            configure_library();
+            fileWriter.open();
+            fileWriter.addAnnotationString(1, "Connect clicked");
+            /**
+             * In most cases libmuse native library takes care about
+             * exceptions and recovery mechanism, but native code still
+             * may throw in some unexpected situations (like bad bluetooth
+             * connection). Print all exceptions here.
+             */
+            try {
+                muse.runAsynchronously();
+            } catch (Exception e) {
+                Log.e("Muse Headband", e.toString());
             }
         }
-        else if (v.getId() == R.id.disconnect) {
-            if (muse != null) {
-                /**
-                 * true flag will force libmuse to unregister all listeners,
-                 * BUT AFTER disconnecting and sending disconnection event.
-                 * If you don't want to receive disconnection event (for ex.
-                 * you call disconnect when application is closed), then
-                 * unregister listeners first and then call disconnect:
-                 * muse.unregisterAllListeners();
-                 * muse.disconnect(false);
-                 */
-                muse.disconnect(true);
-                fileWriter.addAnnotationString(1, "Disconnect clicked");
-                fileWriter.flush();
-                fileWriter.close();
-            }
+    }
+
+    public void disconnect() {
+        if (muse != null) {
+            /**
+             * true flag will force libmuse to unregister all listeners,
+             * BUT AFTER disconnecting and sending disconnection event.
+             * If you don't want to receive disconnection event (for ex.
+             * you call disconnect when application is closed), then
+             * unregister listeners first and then call disconnect:
+             * muse.unregisterAllListeners();
+             * muse.disconnect(false);
+             */
+            muse.disconnect(true);
+            fileWriter.addAnnotationString(1, "Disconnect clicked");
+            fileWriter.flush();
+            fileWriter.close();
         }
     }
 

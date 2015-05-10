@@ -28,8 +28,6 @@ public class MainActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button refreshButton = (Button) findViewById(R.id.refresh);
-        refreshButton.setOnClickListener(this);
         Button connectButton = (Button) findViewById(R.id.connect);
         connectButton.setOnClickListener(this);
         Button disconnectButton = (Button) findViewById(R.id.disconnect);
@@ -39,20 +37,11 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void initialize() {
-        Button btn = (Button) findViewById(R.id.btn1);
 
-        btn.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                connect();
-            }
+        Button musicBtn = (Button) findViewById(R.id.btn2);
 
-        });
-
-        btn = (Button) findViewById(R.id.btn2);
-
-        btn.setOnClickListener(new View.OnClickListener() {
+        musicBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -70,6 +59,22 @@ public class MainActivity extends Activity implements OnClickListener {
                 getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
                 "testlibmusefile.muse"));
 
+        Button btn1 = (Button) findViewById(R.id.connect);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mindfulMuse.connect();
+                connect();
+            }
+        });
+
+        Button btn2 = (Button) findViewById(R.id.disconnect);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mindfulMuse.disconnect();
+            }
+        });
     }
 
     @Override
@@ -86,8 +91,6 @@ public class MainActivity extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Spinner musesSpinner = (Spinner) findViewById(R.id.muses_spinner);
-        mindfulMuse.processInput(v, musesSpinner, this);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
