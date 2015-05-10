@@ -2,7 +2,7 @@
 Musek – App that plays music based on your mood and location
 =============
 
-![Musek – App that plays music based on your mood and location ](https://raw.githubusercontent.com/wearhackstoronto/musek/master/mindfulhacks/app/src/main/res/drawable/appicon.png?token=AHQN1xUEEoih8opsGte-WMbQIoeJVQw0ks5VWK2IwA%3D%3D)
+![Musek – App that plays music based on your mood and location](https://raw.githubusercontent.com/wearhackstoronto/musek/master/mindfulhacks/app/src/main/res/drawable/appicon.png?token=AHQN1xUEEoih8opsGte-WMbQIoeJVQw0ks5VWK2IwA%3D%3D)
 
 Team members: 
 * Sharon Lee
@@ -19,4 +19,7 @@ The Estimote beacons enhance the Musek app by making it context to the situation
 
 Further improvements:  machines learning algorithm to enhance customization, incorporate heartrate or other sensors in determine user state more accurately, sharing your mood with friends
 
-Video: https://www.youtube.com/watch?v=77fl8fEEzDs&feature=youtu.be
+
+[![Video](http://img.youtube.com/vi/77fl8fEEzDs/0.jpg)](http://bit.ly/musek-video)
+
+
