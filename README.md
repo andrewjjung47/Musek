@@ -22,4 +22,6 @@ Further improvements:  machines learning algorithm to enhance customization, inc
 
 [![Video](http://img.youtube.com/vi/77fl8fEEzDs/0.jpg)](http://bit.ly/musek-video)
 
-
+<img
+src="http://c.statcounter.com/10433428/0/d1407672/0/"
+alt="web stats" style="border:none;"></a>
