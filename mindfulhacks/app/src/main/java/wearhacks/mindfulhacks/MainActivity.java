@@ -60,6 +60,9 @@ public class MainActivity extends Activity implements OnClickListener {
                 getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
                 "testlibmusefile.muse"));
 
+        Spinner musesSpinner = (Spinner) findViewById(R.id.muses_spinner);
+        mindfulMuse.refresh(this, musesSpinner);
+
     }
 
     @Override

@@ -242,6 +242,20 @@ public class MindfulMuse {
         }
     }
 
+    public void refresh(MainActivity main, Spinner musesSpinner) {
+        MuseManager.refreshPairedMuses();
+        List<Muse> pairedMuses = MuseManager.getPairedMuses();
+        List<String> spinnerItems = new ArrayList<String>();
+        for (Muse m: pairedMuses) {
+            String dev_id = m.getName() + "-" + m.getMacAddress();
+            Log.i("Muse Headband", dev_id);
+            spinnerItems.add(dev_id);
+        }
+        ArrayAdapter<String> adapterArray = new ArrayAdapter<String> (
+                main, android.R.layout.simple_spinner_item, spinnerItems);
+        musesSpinner.setAdapter(adapterArray);
+    }
+
     public void processInput(View v, Spinner musesSpinner, MainActivity main) {
         if (v.getId() == R.id.refresh) {
             MuseManager.refreshPairedMuses();
