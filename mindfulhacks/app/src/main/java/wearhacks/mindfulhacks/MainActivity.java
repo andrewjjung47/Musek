@@ -12,6 +12,7 @@ import java.io.File;
 import android.app.Activity;
 import android.os.Environment;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -28,8 +29,8 @@ public class MainActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button refreshButton = (Button) findViewById(R.id.refresh);
-        refreshButton.setOnClickListener(this);
+//        Button refreshButton = (Button) findViewById(R.id.refresh);
+//        refreshButton.setOnClickListener(this);
         Button connectButton = (Button) findViewById(R.id.connect);
         connectButton.setOnClickListener(this);
         Button disconnectButton = (Button) findViewById(R.id.disconnect);
@@ -63,6 +64,9 @@ public class MainActivity extends Activity implements OnClickListener {
         Spinner musesSpinner = (Spinner) findViewById(R.id.muses_spinner);
         mindfulMuse.refresh(this, musesSpinner);
 
+        ImageView iv = (ImageView) findViewById(R.id.con_status);
+        iv.setImageResource(R.drawable.red_circle);
+
     }
 
     @Override
@@ -81,6 +85,10 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         Spinner musesSpinner = (Spinner) findViewById(R.id.muses_spinner);
         mindfulMuse.processInput(v, musesSpinner, this);
+
+        if (v.getId() == R.id.connect) {
+            estimoteDetector.connect();
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
