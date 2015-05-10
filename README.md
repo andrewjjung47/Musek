@@ -1,6 +1,6 @@
 ![drawing](https://raw.githubusercontent.com/wearhackstoronto/musek/master/mindfulhacks/app/src/main/res/drawable/appicon.png?token=AHQN1xUEEoih8opsGte-WMbQIoeJVQw0ks5VWK2IwA%3D%3D)
 
-#**Customized music based on your mood and location.**
+#**Musek – App that plays music based on your mood and location | Made at Wearhacks **
 
 Team members: 
 * Sharon Lee
