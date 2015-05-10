@@ -342,11 +342,13 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     protected void onPause() {
         super.onPause();
+        mediaHandler.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        mediaHandler.start();
     }
 
     @Override
@@ -467,11 +469,10 @@ public class MainActivity extends Activity implements OnClickListener {
         Log.v("dbg", "Debug");
 
         if (MediaHandler.isPlaying()) {
-            //mediaPlayer.pause();
-            MediaHandler.fadeOut();
+            MediaHandler.pause();
         } else {
-            //mediaPlayer.start();
-            MediaHandler.fadeIn();
+            MediaHandler.toggleMusic = true;
+            MediaHandler.start();
         }
     }
 }

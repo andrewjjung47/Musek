@@ -61,6 +61,13 @@ public class EstimoteDetector {
                         Log.v("dbg", distance + "");
                         TextView tv = (TextView) main.findViewById(R.id.TV1);
                         tv.setText(String.valueOf(distance));
+
+                        if (distance < 2.0) {
+                            main.mediaHandler.activatePodcast(true);
+                        } else {
+                            main.mediaHandler.activatePodcast(false);
+                        }
+
                     } else if (rangedBeacon.getMajor() == beaconList.get(1).getMajor()) {
                         Log.v("dbg", "In region of beacon 1");
                         double distance = Math.min(Utils.computeAccuracy(rangedBeacon), 6.0);

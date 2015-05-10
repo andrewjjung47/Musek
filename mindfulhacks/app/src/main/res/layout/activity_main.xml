@@ -26,7 +26,7 @@
 
     <Button
         android:id="@+id/btn2"
-        android:text="Get Data"
+        android:text="Music"
         android:layout_toRightOf="@+id/btn1"
         android:layout_below="@+id/TV1"
         android:layout_height="50dp"

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.os.RemoteException;
 import android.media.MediaPlayer;
+import android.util.Log;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,8 +15,12 @@ import java.util.TimerTask;
  */
 public class MediaHandler {
 
-    static MediaPlayer musicPlayer;
-    static MediaPlayer podcastPlayer;
+    static public MediaPlayer musicPlayer;
+    static public MediaPlayer podcastPlayer;
+
+    // Are true if we are pausing the MediaPlayer and fading out afterwards
+    static public boolean toggleMusic = false;
+    static public boolean togglePodcast = false;
 
     static public AudioManager am;
 
@@ -32,6 +38,17 @@ public class MediaHandler {
 
         // Automatically plays local file uptownfunk in /res/raw
         musicPlayer = MediaPlayer.create(main.getApplicationContext(), R.raw.uptownfunk);
+
+        String url = "http://podcast.cbc.ca/mp3/podcasts/current_20150508_81750.mp3"; // your URL here
+        podcastPlayer = new MediaPlayer();
+        podcastPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            podcastPlayer.setDataSource(url);
+            podcastPlayer.prepare(); // might take long! (for buffering, etc)
+            //podcastPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         am = (AudioManager) main.getSystemService(Context.AUDIO_SERVICE);
 
@@ -60,39 +77,88 @@ public class MediaHandler {
             fVolume = MIN_FLOAT_VOLUME;
         }
 
-        musicPlayer.setVolume(fVolume, fVolume);
+        if (toggleMusic) {
+            musicPlayer.setVolume(fVolume, fVolume);
+        }
+        if (togglePodcast) {
+            podcastPlayer.setVolume(fVolume, fVolume);
+        }
     }
 
-    static public boolean isPlaying(){
+    static public boolean isPlaying() {
+        return (musicPlayer.isPlaying() | podcastPlayer.isPlaying());
+    }
+
+    static public void pause() {
+
+        if (musicPlayer.isPlaying()) {
+            toggleMusic = true;
+            musicPlayer.pause();
+        }
+        if (podcastPlayer.isPlaying()) {
+            togglePodcast = true;
+            podcastPlayer.pause();
+        }
+    }
+
+    static public void start() {
+
+        if (toggleMusic == true) {
+            musicPlayer.start();
+            toggleMusic = false;
+        }
+        if (togglePodcast == true) {
+            podcastPlayer.start();
+            togglePodcast = false;
+        }
+    }
+
+    static public boolean isMusicPlaying() {
 
         return musicPlayer.isPlaying();
 
     }
 
+    static public boolean isPodcastPlaying() {
+
+        return podcastPlayer.isPlaying();
+
+    }
+
     static public void fadeOut() {
+
+        //if (musicPlayer.isPlaying()) {
+        //    toggleMusic = true;
+        //}
+        //if (podcastPlayer.isPlaying()) {
+        //    togglePodcast = true;
+        //}
+
         float fadeDuration = 5;
 
         iVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         cVolume = iVolume;
 
         final Timer timer = new Timer(true);
-        TimerTask timerTask = new TimerTask()
-        {
+        TimerTask timerTask = new TimerTask() {
             @Override
-            public void run()
-            {
+            public void run() {
                 updateVolume(-1);
-                if (cVolume == MIN_INT_VOLUME)
-                {
+                if (cVolume == MIN_INT_VOLUME) {
                     timer.cancel();
                     timer.purge();
-                    musicPlayer.pause();
+                    if (toggleMusic) {
+                        musicPlayer.pause();
+                    }
+                    if (togglePodcast) {
+                        podcastPlayer.pause();
+                    }
                 }
             }
         };
 
         // calculate delay, cannot be zero, set to 1 if zero
-        int delay = (int) fadeDuration/iVolume;
+        int delay = (int) fadeDuration / iVolume;
         if (delay == 0) delay = 1;
 
         timer.schedule(timerTask, delay, delay);
@@ -105,25 +171,46 @@ public class MediaHandler {
         cVolume = iVolume;
 
         final Timer timer = new Timer(true);
-        TimerTask timerTask = new TimerTask()
-        {
+        TimerTask timerTask = new TimerTask() {
             @Override
-            public void run()
-            {
+            public void run() {
                 updateVolume(1);
-                if (cVolume == MAX_INT_VOLUME)
-                {
+                if (cVolume == MAX_INT_VOLUME) {
                     timer.cancel();
                     timer.purge();
-                    musicPlayer.start();
+                    if (toggleMusic) {
+                        musicPlayer.start();
+                        toggleMusic = false;
+                    }
+                    if (togglePodcast) {
+                        podcastPlayer.start();
+                        togglePodcast = false;
+                    }
                 }
             }
         };
 
         // calculate delay, cannot be zero, set to 1 if zero
-        int delay = (int) fadeDuration/iVolume;
+        int delay = (int) fadeDuration / iVolume;
         if (delay == 0) delay = 1;
 
         timer.schedule(timerTask, delay, delay);
+    }
+
+    static public void activatePodcast(boolean podcastactive) {
+        togglePodcast = podcastactive;
+        if (togglePodcast == true) {
+            // we need to activate podcast
+            if (musicPlayer.isPlaying() == true) {
+                musicPlayer.pause();
+                podcastPlayer.start();
+            }
+        } else {
+            // we need to deactivate podcast
+            if (podcastPlayer.isPlaying() == true) {
+                podcastPlayer.pause();
+                musicPlayer.start();
+            }
+        }
     }
 }
