@@ -9,9 +9,20 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/TV1"
+        android:text="@string/hello_world" android:layout_width="150dp"
+        android:layout_height="30dp" />
+    <TextView
         android:id="@+id/TV2"
         android:layout_width="150dp"
         android:layout_height="30dp" />
+
+    <Button
+        android:id="@+id/btn1"
+        android:text="Connect"
+        android:layout_below="@+id/TV1"
+        android:layout_height="50dp"
+        android:layout_width="150dp"/>
 
     <Button
         android:id="@+id/btn2"
@@ -29,6 +40,11 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:orientation="horizontal" >
+            <Button
+                android:id="@+id/refresh"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:text="@string/refresh" />
             <Button
                 android:id="@+id/connect"
                 android:layout_width="100dp"
@@ -74,6 +90,44 @@
                 android:text="@string/init_val" />
             <TextView
                 android:id="@+id/elem4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:text="@string/init_val" />
+        </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:text="@string/muse_mellow" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/mellow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:text="@string/init_val" />
+        </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:text="@string/muse_conc" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/conc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

@@ -175,6 +175,16 @@ public class MindfulMuse {
         }
     }
 
+    public void refresh() {
+        // Refresh
+        MuseManager.refreshPairedMuses();
+        List<Muse> pairedMuses = MuseManager.getPairedMuses();
+        for (Muse m: pairedMuses) {
+            String dev_id = m.getName() + "-" + m.getMacAddress();
+            Log.i("Muse Headband", dev_id);
+        }
+    }
+
     public void connect() {
         // Refresh
         MuseManager.refreshPairedMuses();

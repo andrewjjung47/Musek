@@ -59,6 +59,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
                 "testlibmusefile.muse"));
 
+        mindfulMuse.refresh();
+
         Button btn1 = (Button) findViewById(R.id.connect);
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
