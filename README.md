@@ -16,3 +16,5 @@ Muse headband analyzes user's brain waves to determine mindfulness and concentra
 The Estimote beacons enhance the Musek app by making it context to the situation to provide further custimization to the user experience. This allows the music to trasition as the user's location changes. For example, the app plays morning news in the kitchen to help you start the day.
 
 Further improvements:  machines learning algorithm to enhance customization, incorporate heartrate or other sensors in determine user state more accurately, sharing your mood with friends
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/77fl8fEEzDs" frameborder="0" allowfullscreen></iframe>
