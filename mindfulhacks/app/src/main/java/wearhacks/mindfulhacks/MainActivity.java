@@ -39,18 +39,8 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void initialize() {
-        Button btn = (Button) findViewById(R.id.btn1);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                connect();
-            }
-
-        });
-
-        btn = (Button) findViewById(R.id.btn2);
+        Button btn = (Button) findViewById(R.id.btn2);
 
         btn.setOnClickListener(new View.OnClickListener() {
 

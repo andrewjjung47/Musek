@@ -56,8 +56,8 @@ public class EstimoteDetector {
                 for (Beacon rangedBeacon : beacons) {
                     if (rangedBeacon.getMajor() == beaconList.get(0).getMajor()) {
                         double distance = Math.min(Utils.computeAccuracy(rangedBeacon), 6.0);
-                        TextView tv = (TextView) main.findViewById(R.id.TV1);
-                        tv.setText(String.valueOf(distance));
+//                        TextView tv = (TextView) main.findViewById(R.id.TV1);
+//                        tv.setText(String.valueOf(distance));
 
                         if (distance < 2.0) {
                             main.mediaHandler.activatePodcast(true);
