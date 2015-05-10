@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Mindfulhacks</string>
+    <string name="app_name">Musek</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="connect">Connect</string>
@@ -21,6 +21,6 @@
     <string name="muse_conc">Concentration:</string>
     <string name="muse_mellow">Mellow:</string>
     <string name="user_state">Brain Mood:</string>
-    <string name="title_activity_startup_screen">MuseK</string>
+    <string name="title_activity_startup_screen">Musek</string>
 
 </resources>
