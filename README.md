@@ -19,6 +19,8 @@ The Estimote beacons enhance the Musek app by making it context to the situation
 
 Further improvements:  machines learning algorithm to enhance customization, incorporate heartrate or other sensors in determine user state more accurately, sharing your mood with friends
 
+Video:
+--------
 
 [![Video](http://img.youtube.com/vi/77fl8fEEzDs/0.jpg)](http://bit.ly/musek-video)
 
