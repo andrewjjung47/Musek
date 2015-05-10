@@ -31,7 +31,7 @@ public class StartupScreen extends ActionBarActivity {
         final Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
 
         ImageView iv = (ImageView) findViewById(R.id.startupIB);
-        iv.setImageResource(R.drawable.ic_launcher);
+        iv.setImageResource(R.drawable.museklarge);
         iv.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
