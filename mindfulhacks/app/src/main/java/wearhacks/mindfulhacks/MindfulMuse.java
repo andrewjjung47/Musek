@@ -51,7 +51,7 @@ public class MindfulMuse {
                 new WeakReference<Activity>(main);
 
         this.activityRef = activityRef;
-        connectionListener = new ConnectionListener(activityRef);
+        connectionListener = new ConnectionListener();
         dataListener = new DataListener(activityRef);
 
         fileWriter = MuseFileWriterFactory.getMuseFileWriter(file);
@@ -64,13 +64,6 @@ public class MindfulMuse {
      * Connection listener updates UI with new connection status and logs it.
      */
     class ConnectionListener extends MuseConnectionListener {
-
-        final WeakReference<Activity> activityRef;
-
-        ConnectionListener(final WeakReference<Activity> activityRef) {
-            this.activityRef = activityRef;
-        }
-
         @Override
         public void receiveMuseConnectionPacket(MuseConnectionPacket p) {
             final ConnectionState current = p.getCurrentConnectionState();
@@ -79,28 +72,6 @@ public class MindfulMuse {
             final String full = "Muse " + p.getSource().getMacAddress() +
                     " " + status;
             Log.i("Muse Headband", full);
-            final Activity activity = activityRef.get();
-            // UI thread is used here only because we need to update
-            // TextView values. You don't have to use another thread, unless
-            // you want to run disconnect() or connect() from connection packet
-            // handler. In this case creating another thread is required.
-            if (activity != null) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        TextView statusText =
-                                (TextView) activity.findViewById(R.id.con_status);
-                        statusText.setText(status);
-                        if (current == ConnectionState.CONNECTED) {
-                            MuseVersion museVersion = muse.getMuseVersion();
-                            String version = museVersion.getFirmwareType() +
-                                    " - " + museVersion.getFirmwareVersion() +
-                                    " - " + Integer.toString(
-                                    museVersion.getProtocolVersion());
-                        }
-                    }
-                });
-            }
         }
     }
 
