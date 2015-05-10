@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -89,15 +90,20 @@ public class MindfulMuse {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TextView statusText =
-                                (TextView) activity.findViewById(R.id.con_status);
-                        statusText.setText(status);
+//                        TextView statusText =
+//                                (TextView) activity.findViewById(R.id.con_status);
+//                        statusText.setText(status);
                         if (current == ConnectionState.CONNECTED) {
                             MuseVersion museVersion = muse.getMuseVersion();
                             String version = museVersion.getFirmwareType() +
                                     " - " + museVersion.getFirmwareVersion() +
                                     " - " + Integer.toString(
                                     museVersion.getProtocolVersion());
+                            ImageView iv = (ImageView) activity.findViewById(R.id.con_status);
+                            iv.setImageResource(R.drawable.green_circle);
+                        } else {
+                            ImageView iv = (ImageView) activity.findViewById(R.id.con_status);
+                            iv.setImageResource(R.drawable.yellow_circle);
                         }
                     }
                 });
@@ -259,20 +265,21 @@ public class MindfulMuse {
     }
 
     public void processInput(View v, Spinner musesSpinner, MainActivity main) {
-        if (v.getId() == R.id.refresh) {
-            MuseManager.refreshPairedMuses();
-            List<Muse> pairedMuses = MuseManager.getPairedMuses();
-            List<String> spinnerItems = new ArrayList<String>();
-            for (Muse m: pairedMuses) {
-                String dev_id = m.getName() + "-" + m.getMacAddress();
-                Log.i("Muse Headband", dev_id);
-                spinnerItems.add(dev_id);
-            }
-            ArrayAdapter<String> adapterArray = new ArrayAdapter<String> (
-                    main, android.R.layout.simple_spinner_item, spinnerItems);
-            musesSpinner.setAdapter(adapterArray);
-        }
-        else if (v.getId() == R.id.connect) {
+//        if (v.getId() == R.id.refresh) {
+//            MuseManager.refreshPairedMuses();
+//            List<Muse> pairedMuses = MuseManager.getPairedMuses();
+//            List<String> spinnerItems = new ArrayList<String>();
+//            for (Muse m: pairedMuses) {
+//                String dev_id = m.getName() + "-" + m.getMacAddress();
+//                Log.i("Muse Headband", dev_id);
+//                spinnerItems.add(dev_id);
+//            }
+//            ArrayAdapter<String> adapterArray = new ArrayAdapter<String> (
+//                    main, android.R.layout.simple_spinner_item, spinnerItems);
+//            musesSpinner.setAdapter(adapterArray);
+//        }
+//        else
+        if (v.getId() == R.id.connect) {
             List<Muse> pairedMuses = MuseManager.getPairedMuses();
             if (pairedMuses.size() < 1 ||
                     musesSpinner.getAdapter().getCount() < 1) {
